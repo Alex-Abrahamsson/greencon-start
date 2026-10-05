@@ -1,0 +1,42 @@
+@use "@/styles/mixins";
+
+.page {
+  display: grid;
+  grid-template-columns: minmax(320px, 360px) minmax(0, 1fr) minmax(280px, 320px);
+  min-height: 100vh;
+}
+
+.noticeSidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+.content {
+  min-width: 0;
+  padding: var(--space-8) var(--space-6);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+@include mixins.tablet-down {
+  .page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .noticeSidebar {
+    position: static;
+    height: auto;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .content {
+    padding: var(--space-8) var(--space-4);
+  }
+}

@@ -1,0 +1,604 @@
+@use "@/styles/mixins";
+
+.floatingContainer {
+  position: fixed;
+  bottom: 28px;
+  right: 350px;
+  z-index: 100;
+}
+
+@include mixins.mobile-down {
+  .floatingContainer {
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+// Mini Envelope Widget (Base / Read size: 80px width, 60px height)
+.miniEnvelope {
+  position: relative;
+  background: linear-gradient(160deg, #fefefd 0%, #ede8de 100%);
+  border: 1.5px solid #d0c8b6;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  overflow: visible;
+  outline: none;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22), 0 0 0 2px rgba(23, 132, 27, 0.25);
+  }
+
+  @include mixins.interactive-focus;
+}
+
+@media (prefers-color-scheme: dark) {
+  .miniEnvelope {
+    background: linear-gradient(160deg, #2b333e 0%, #1e242d 100%);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(23, 132, 27, 0.35);
+    }
+  }
+}
+
+// Bouncing animation when letter is unread
+@keyframes envelopeBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Läst läge: Kompakt storlek (80px × 60px)
+.isRead {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+
+  &:hover {
+    transform: scale(1.08) translateY(-2px);
+  }
+}
+
+// Oläst läge: Dubbel storlek (160px × 120px) med studs
+.isUnread {
+  width: 160px;
+  height: 120px;
+  border-radius: 12px;
+  animation: envelopeBounce 2.2s infinite ease-in-out;
+
+  &:hover {
+    animation-play-state: paused;
+    transform: scale(1.05) translateY(-2px);
+  }
+
+  .flap {
+    left: 8px;
+    right: 8px;
+    border-top-width: 48px;
+    border-left-width: 72px;
+    border-right-width: 72px;
+  }
+
+  .envelopeAccent {
+    height: 5px;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .miniStamp {
+    top: 10px;
+    right: 12px;
+    width: 36px;
+    height: 40px;
+    border-radius: 4px;
+    border-width: 1.5px;
+  }
+
+  .stampIcon {
+    font-size: 20px;
+  }
+
+  .miniLabel {
+    bottom: 12px;
+    left: 14px;
+  }
+
+  .labelTitle {
+    font-size: 0.95rem;
+  }
+
+  .labelWeek {
+    font-size: 0.85rem;
+  }
+
+  .alertBadge {
+    width: 30px;
+    height: 30px;
+    top: -10px;
+    right: -10px;
+  }
+
+  .alertIcon {
+    font-size: 18px;
+  }
+}
+
+// Envelope Top Triangular Flap (Default read dimensions)
+.flap {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  right: 4px;
+  height: 0;
+  border-top: 24px solid rgba(216, 210, 196, 0.85);
+  border-left: 36px solid transparent;
+  border-right: 36px solid transparent;
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.1));
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .flap {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Bottom Accent Line
+.envelopeAccent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, #25a22a 50%, var(--color-primary) 100%);
+  border-radius: 0 0 6px 6px;
+  opacity: 0.9;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// Mini Stamp in upper right
+.miniStamp {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 18px;
+  height: 20px;
+  background: #eaf5eb;
+  border: 1px dashed var(--color-primary);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  z-index: 2;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stampIcon {
+  font-size: 10px;
+  line-height: 1;
+  transition: font-size 0.25s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .miniStamp {
+    background: rgba(23, 132, 27, 0.2);
+    border-color: rgba(23, 132, 27, 0.8);
+  }
+}
+
+// Mini Label in lower left
+.miniLabel {
+  position: absolute;
+  bottom: 6px;
+  left: 7px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  text-align: left;
+  z-index: 2;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.labelTitle {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-foreground);
+  letter-spacing: 0.02em;
+  transition: font-size 0.25s ease;
+}
+
+.labelWeek {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  transition: font-size 0.25s ease;
+}
+
+// Unread Exclamation Mark Alert Badge
+.alertBadge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 22px;
+  height: 22px;
+  background: #e02424;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-surface, #ffffff);
+  box-shadow: 0 2px 8px rgba(224, 36, 36, 0.5);
+  z-index: 10;
+  animation: pulseAlert 2s infinite ease-in-out;
+}
+
+.alertIcon {
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  font-family: inherit;
+}
+
+@keyframes pulseAlert {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+// Reading Modal / Popup Window
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: 1000;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.modalCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-lg);
+  max-width: 680px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  animation: scaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalLetterhead {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1.5px solid var(--color-surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: linear-gradient(180deg, var(--color-surface) 0%, rgba(0, 0, 0, 0.02) 100%);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary) 0%, #25a22a 100%);
+  }
+}
+
+.letterheadLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.companyLogo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logoIcon {
+  font-size: 1.2rem;
+}
+
+.logoText {
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+
+.letterheadSubtitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.letterheadRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.historySelect {
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px var(--space-2);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &:hover, &:focus {
+    border-color: var(--color-primary);
+  }
+}
+
+.modalDate {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.closeButton {
+  background: transparent;
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-pill);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--color-foreground);
+    border-color: var(--color-foreground);
+  }
+
+  @include mixins.interactive-focus;
+}
+
+.modalBody {
+  padding: var(--space-6);
+  overflow-y: auto;
+  line-height: 1.65;
+  color: var(--color-foreground);
+}
+
+.modalTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  margin: 0 0 var(--space-4) 0;
+  line-height: 1.3;
+  color: var(--color-foreground);
+  letter-spacing: -0.015em;
+}
+
+.authorBadgeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.avatarSmall {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-subtle);
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modalAuthorName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.modalAuthorRole {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.highlightsContainer {
+  background: var(--color-primary-subtle);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.highlightsTitle {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.highlightsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.highlightItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.bulletCheck {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.letterText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: 0.95rem;
+  color: var(--color-foreground);
+}
+
+.paragraph {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.signOff {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px dashed var(--color-surface-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+  }
+
+  strong {
+    font-size: 1rem;
+    color: var(--color-primary);
+  }
+
+  span {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+}
+
+.modalFooter {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-background);
+}
+
+.toggleReadAction {
+  background: transparent;
+  border: 1px solid var(--color-surface-border);
+  color: var(--color-muted);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--color-foreground);
+    color: var(--color-foreground);
+  }
+
+  @include mixins.interactive-focus;
+}
+
+.closeModalAction {
+  background: var(--color-primary);
+  border: none;
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background: var(--color-primary-hover);
+  }
+
+  @include mixins.interactive-focus;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@include mixins.mobile-down {
+  .modalLetterhead {
+    flex-wrap: wrap;
+    padding: var(--space-4);
+  }
+
+  .letterheadRight {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: var(--space-2);
+  }
+}

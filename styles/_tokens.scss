@@ -1,0 +1,75 @@
+:root {
+  // Colors
+  --color-background: #fdfdfd;
+  --color-foreground: #17202a;
+  --color-surface: #ffffff;
+  --color-surface-border: #e2e8f0;
+  --color-muted: #596775;
+
+  --color-primary: #17841b;
+  --color-primary-hover: #126b16;
+  --color-primary-subtle: rgba(23, 132, 27, 0.1);
+  --color-primary-contrast: #ffffff;
+
+  --color-secondary: #c0c1c3;
+  --color-secondary-hover: #a8aaad;
+  --color-secondary-subtle: rgba(192, 193, 195, 0.25);
+  --color-secondary-contrast: #17202a;
+
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-success: #16a34a;
+  --color-info: #2563eb;
+
+  // Spacing
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  // Radius
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  // Shadows
+  --shadow-card: 0 12px 28px -4px rgb(23 132 27 / 8%), 0 6px 12px -2px rgb(15 23 42 / 6%);
+
+  // Typography
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-hero: clamp(2rem, 5vw, 4rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0f172a;
+    --color-foreground: #e5e7eb;
+    --color-surface: #111827;
+    --color-surface-border: #273449;
+    --color-muted: #9ca3af;
+
+    --color-primary: #22c55e;
+    --color-primary-hover: #4ade80;
+    --color-primary-subtle: rgba(34, 197, 94, 0.16);
+    --color-primary-contrast: #042f2e;
+
+    --color-secondary: #c0c1c3;
+    --color-secondary-hover: #d1d5db;
+    --color-secondary-subtle: rgba(192, 193, 195, 0.2);
+    --color-secondary-contrast: #111827;
+
+    --shadow-card: 0 16px 32px rgb(0 0 0 / 28%);
+  }
+}
+
+// Sass variables
+$breakpoint-tablet: 900px;
+$breakpoint-mobile: 600px;
