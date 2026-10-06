@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
 import styles from "./PageHeader.module.scss";
 
 type PageHeaderProps = {
     eyebrow: string;
     title: string;
-    description: string;
+    description: ReactNode;
 };
 
 export function PageHeader({ eyebrow, title, description }: PageHeaderProps) {

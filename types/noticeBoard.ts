@@ -10,3 +10,7 @@ export type ImprovementSuggestion = {
     likes: number;
     color: PostitColor;
 };
+
+export type NoticeBoardSuggestion = ImprovementSuggestion & {
+    isLiked: boolean;
+};
